@@ -16,6 +16,7 @@ void rt_hw_board_init() {
 
 #ifdef RT_USING_HEAP
   /* initialize memory system */
+  printf("rt_heap: %x -> %x\n", RT_HW_HEAP_BEGIN, RT_HW_HEAP_END);
   rt_system_heap_init(RT_HW_HEAP_BEGIN, RT_HW_HEAP_END);
 #endif
 
