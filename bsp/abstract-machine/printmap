@@ -1,7 +1,6 @@
 # Building rtthread-image [riscv32e-ysyxsoc]
 # Building am-archive [riscv32e-ysyxsoc]
 + CC src/platform/ysyxsoc/trm.c
-+ CC src/platform/ysyxsoc/bootloader.c
 + AR -> build/am-riscv32e-ysyxsoc.a
 # Building klib-archive [riscv32e-ysyxsoc]
 + LD -> build/rtthread-riscv32e-ysyxsoc.elf
@@ -1372,14 +1371,14 @@ Linker script and memory map
                 0x30000068                        __fsbl_end__ = .
 
 .text_bootloader
-                0x0f000000       0xd8 load address 0x30000068
+                0x0f000000       0xbc load address 0x30000068
                 0x0f000000                        __text_bootloader_start__ = .
  *(.text_bootloader)
  .text_bootloader
-                0x0f000000       0xd8 /home/yjmstr/ysyx-workbench/abstract-machine/am/build/am-riscv32e-ysyxsoc.a(bootloader.o)
+                0x0f000000       0xbc /home/yjmstr/ysyx-workbench/abstract-machine/am/build/am-riscv32e-ysyxsoc.a(bootloader.o)
                 0x0f000000                copy_data
-                0x0f0000bc                _bootloader_start
-                0x0f0000d8                        __text_bootloader_end__ = .
+                0x0f0000a0                _bootloader_start
+                0x0f0000bc                        __text_bootloader_end__ = .
                 0x30000068                        __text_bootloader_load_start__ = LOADADDR (.text_bootloader)
 
 .text           0x80000000    0x1a7b0 load address 0x30004000
@@ -3239,8 +3238,6 @@ Linker script and memory map
  .rela.fsbl     0x8001f1e0        0x0 /home/yjmstr/Templates/rtt-am/bsp/abstract-machine/build/riscv32e-ysyxsoc/src/interrupt.o
                 0x8001f1e0                        . = ALIGN (0x8)
                 0x30004000                        __app_text_and_rodata_load_start__ = LOADADDR (.text)
-                0x30023070                        data_extra_load_start = LOADADDR (.data.extra)
-                0x300231e0                        data_load_start = LOADADDR (.data)
                 0x8001f1e0                        . = .
                 0x8001f1e0                        . = ALIGN (0x8)
 
@@ -3267,6 +3264,8 @@ Linker script and memory map
                 0x8001f5a4                heap
                 0x8001f5b0                        . = ALIGN (0x8)
  *fill*         0x8001f5ac        0x4 
+                0x8001f5b0                        edata = .
+                0x8001f5b0                        _data = .
 
 .bss.extra      0x8001f5b0        0x0 load address 0x300235b0
                 0x8001f5b0                        . = ALIGN (0x8)
@@ -3453,6 +3452,7 @@ Linker script and memory map
                 0x80028298                        . = ALIGN (0x8)
  *fill*         0x80028294        0x4 
                 0x80028298                        data_end = .
+                0x300231e0                        data_load_start = LOADADDR (.data)
                 0x80028298                        end = .
                 0x80028298                        _end = .
                 0x30000000                        _pmem_start = 0x30000000
