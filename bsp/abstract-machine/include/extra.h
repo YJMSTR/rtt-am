@@ -1,7 +1,11 @@
 typedef long suseconds_t;
 typedef unsigned long useconds_t;
 #include <sys/types.h>
-
+// for AM IOE
+#define io_read(reg) \
+  ({ reg##_T __io_param; \
+    ioe_read(reg, &__io_param); \
+    __io_param; })
 #ifdef __ISA_NATIVE__
 // rename posix API to avoid conflict with glibc in native
 #define open      rt_open

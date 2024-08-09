@@ -5,9 +5,10 @@ MEMORY {
   boot_flash(rx): ORIGIN = 0x30000000, LENGTH = 0x4000
   app_flash(rx): ORIGIN = 0x30004000, LENGTH = 0x0fffc000
   psram(rwx) : ORIGIN = 0x80000000, LENGTH = 4M
+  sdram(rwx) : ORIGIN = 0xa0000000, LENGTH = 32M
 }
 SECTIONS {
-  .data.extra : {
+  .data.extra : ALIGN(8) {
     /* section information for finsh shell */
     __fsymtab_start = .;
     KEEP(*(FSymTab))
@@ -35,19 +36,17 @@ SECTIONS {
     *(__am_apps.sdata*)
     __am_apps_data_end = .;
     . = ALIGN(8);
-  } > psram AT > app_flash 
+  } > sdram AT > app_flash 
 }
 INSERT BEFORE .data;
 
 SECTIONS {
-  .bss.extra : {
-    . = ALIGN(8);
+  .bss.extra : ALIGN(4) {
     __am_apps_bss_start = .;
     *(__am_apps.bss*)
     *(__am_apps.sbss*)
     *(__am_apps.scommon*)
     __am_apps_bss_end = .;
-    . = ALIGN(8);
-  } > psram AT > app_flash
+  } > sdram AT > app_flash
 }
 INSERT BEFORE .bss;
